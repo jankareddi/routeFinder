@@ -1,0 +1,19 @@
+<div class="container"></div>
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="row">
+  <div class="col-md-offset-1">
+    <input id="startPt" class="col-md-3" type="text" placeholder="Start location" ng-model="startLoc">
+    <input id="endPt" class="col-md-3 col-md-offset-1" type="text" placeholder="End location" ng-model="endLoc">
+    <input id="offerRide" class="col-md-1 col-md-offset-1" type="button" value="Offer ride" ng-click="offerRideClicked()">
+    <input id="requestRide" class="col-md-1 col-md-offset-1" type="button" value="Request ride" ng-click="requestRideClicked()">
+  </div>
+</div>
+<p></p>
+<div class="row">
+  <div class="col-md-12">
+    <section id="map" class="col-md-12">
+      <div id="map-canvas" ui-map="myMap" ui-options="mapOptions" class="map" ui-event="{'map-click': 'addMarker($event, $params)', 'map-zoom_changed': 'setZoomMessage(myMap.getZoom())' }"></div>
+    </section>
+  </div>
+</div>
+</div>
