@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/hike/hike.socket').register(socket);
   require('../api/maproute/maproute.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }
