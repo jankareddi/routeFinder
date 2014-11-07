@@ -1,0 +1,30 @@
+<div class="container col-md-12">
+  <div ng-include="'components/navbar/navbar.html'"></div>
+  <accordion close-others="true">
+    <accordion-group>
+        <accordion-heading>
+            <b>Offers</b><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <br/>(<i>List all offers made by you</i>)
+        </accordion-heading>
+        <ol>
+            <li ng-repeat="route in routes">From {{route.startPoint.address}} <b>to</b> {{route.endPoint.address}}</li>
+        </ol>
+    </accordion-group>
+    <accordion-group>
+        <accordion-heading>
+            <b>Requests</b><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <br/>(<i>List all requests made by you</i>)
+        </accordion-heading>
+        <ol>
+            <li ng-repeat="hike in hikes">From {{hike.startPoint.address}} <b>to</b> {{hike.endPoint.address}}</li>
+        </ol>
+    </accordion-group>
+    <accordion-group>
+        <accordion-heading>
+            <b>Shared</b><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <br/>(<i>List all rides you share</i>)
+        </accordion-heading>
+        This is just some content to illustrate fancy headings.
+    </accordion-group>
+  </accordion>
+</div>

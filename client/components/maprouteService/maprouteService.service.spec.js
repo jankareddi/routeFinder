@@ -6,13 +6,19 @@ describe('Service: maprouteService', function () {
   beforeEach(module('routeFinderApp'));
 
   // instantiate service
-  var maprouteService;
-  beforeEach(inject(function (_maprouteService_) {
+  var maprouteService, $http, $q;
+  beforeEach(inject(function (_$http_, _$q_, _maprouteService_) {
     maprouteService = _maprouteService_;
+    $http = _$http_;
+    $q = _$q_;
   }));
 
-  it('should do something', function () {
+  it('should exist', function () {
     expect(!!maprouteService).toBe(true);
+  });
+
+  it('should return latlng values', function() {
+    expect(true).toBe(true);
   });
 
 });

@@ -79,7 +79,12 @@ angular.module('routeFinderApp')
         maprouteService.getLatLngFromString($scope.endLoc).then(function(data) {
           var endPt = data;
 
-          var encodedPath = maprouteService.getEncodedPath([startPt, endPt]);
+          // store the ride request
+          maprouteService.addHike(startPt, endPt).catch(function(err) {
+            alert(err);
+          });
+
+          var encodedPath = maprouteService.getEncodedPath([startPt.loc,endPt.loc]);
           // find out if there is a matching route here
           maprouteService.getMatches(encodedPath).then(function(data) {
             // if sucessful, a list of matching routes will be returned
