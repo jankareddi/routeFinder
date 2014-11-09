@@ -22,26 +22,37 @@
                 <button type="button" class="btn btn-primary btn-xs" ng-click="onFindMatches(hike)">
                     Find Matches
                 </button>
-                <button type="button" class="btn btn-primary btn-xs col-md-offset-1" ng-click="onViewRequests(hike)">
-                    View Requests
+
+                <button type="button" class="btn btn-primary btn-xs" ng-click="onViewRequests(hike)">
+                    View Request Status
                 </button>
+                
                 <br/>
                 <div id="matchList" class="well col-md-5" ng-show="matches.length > 0 && paneToShow === 1">
                     <ul>
                         <li ng-repeat="match in matches">
                             {{match.obj.startPoint.address}} <b>to</b> {{match.obj.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="handleSendRequest(hike, match)">Send Request</button>
                         </li>
-                        <button type="button" class="btn btn-primary btn-xs">Send Request</button>
                     </ul>
                 </div>
 
-                <div id="requestList" class="well col-md-5" ng-show="matches.length > 0 && paneToShow === 2">
+                <div id="requestList" class="well col-md-5" ng-show="hike.maprouteRequests.length > 0 && paneToShow === 2">
                     <ul>
-                        List
-                        <!-- <li ng-repeat="request in requests">
-                            {{requestrequest.obj.startPoint.address}} <b>to</b> {{request.obj.endPoint.address}}
-                        </li> -->
-                        <button type="button" class="btn btn-primary btn-xs">Send Request</button>
+                        <li ng-repeat="request in hike.maprouteRequests">
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs">Cancel</button>
+                        </li>
+
+                        <li ng-repeat="request in hike.maprouteAccepts">
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs">Cancel</button>
+                        </li>
+
+                        <li ng-repeat="request in hike.maprouteRejects">
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs">Cancel</button>
+                        </li>
                     </ul>
                 </div>
 

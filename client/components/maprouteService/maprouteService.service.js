@@ -59,6 +59,11 @@ angular.module('routeFinderApp')
       getAllHikes : function() {
         var promise = $http.get('/api/hikes');
         return promise;
+      },
+
+      addMatch : function(hike, match) {
+         var promise = $http.put('/api/hikes/' + hike._id + '/matches', match);
+        return promise;
       }
     };
   });

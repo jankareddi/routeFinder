@@ -23,4 +23,8 @@ angular.module('routeFinderApp')
     $scope.onViewRequests = function(hike) {
       $scope.paneToShow = 2;
     };
+
+    $scope.handleSendRequest = function(hike, match) {
+      maprouteService.addMatch(hike, match);
+    };
   });

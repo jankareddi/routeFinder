@@ -13,7 +13,10 @@ var HikeSchema = new Schema({
     lng : Number,
     lat : Number,
     address : String
-  }
+  },
+  maprouteRequests : [{ type: Schema.Types.ObjectId, ref: 'Maproute' }],
+  maprouteAccepts : [{ type: Schema.Types.ObjectId, ref: 'Maproute' }],
+  maprouteRejects : [{ type: Schema.Types.ObjectId, ref: 'Maproute' }]
 });
 
 module.exports = mongoose.model('Hike', HikeSchema);
