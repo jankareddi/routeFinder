@@ -3,7 +3,7 @@
   <accordion close-others="true">
     <accordion-group>
         <accordion-heading>
-            <b>Offers</b><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <b>Offers  </b><span class="badge">{{routes.length}}</span><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
             <br/>(<i>List all offers made by you</i>)
         </accordion-heading>
         <ol>
@@ -12,11 +12,40 @@
     </accordion-group>
     <accordion-group>
         <accordion-heading>
-            <b>Requests</b><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <b>Requests  </b><span class="badge">{{hikes.length}}</span><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
             <br/>(<i>List all requests made by you</i>)
         </accordion-heading>
         <ol>
-            <li ng-repeat="hike in hikes">From {{hike.startPoint.address}} <b>to</b> {{hike.endPoint.address}}</li>
+            <div ng-repeat="hike in hikes">
+                <li>From {{hike.startPoint.address}} <b>to</b> {{hike.endPoint.address}}</li>
+                <br/>
+                <button type="button" class="btn btn-primary btn-xs" ng-click="onFindMatches(hike)">
+                    Find Matches
+                </button>
+                <button type="button" class="btn btn-primary btn-xs col-md-offset-1" ng-click="onViewRequests(hike)">
+                    View Requests
+                </button>
+                <br/>
+                <div id="matchList" class="well col-md-5" ng-show="matches.length > 0 && paneToShow === 1">
+                    <ul>
+                        <li ng-repeat="match in matches">
+                            {{match.obj.startPoint.address}} <b>to</b> {{match.obj.endPoint.address}}
+                        </li>
+                        <button type="button" class="btn btn-primary btn-xs">Send Request</button>
+                    </ul>
+                </div>
+
+                <div id="requestList" class="well col-md-5" ng-show="matches.length > 0 && paneToShow === 2">
+                    <ul>
+                        List
+                        <!-- <li ng-repeat="request in requests">
+                            {{requestrequest.obj.startPoint.address}} <b>to</b> {{request.obj.endPoint.address}}
+                        </li> -->
+                        <button type="button" class="btn btn-primary btn-xs">Send Request</button>
+                    </ul>
+                </div>
+
+            </div>
         </ol>
     </accordion-group>
     <accordion-group>

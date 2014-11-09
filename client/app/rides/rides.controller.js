@@ -10,4 +10,17 @@ angular.module('routeFinderApp')
       $scope.hikes = hikes.data;
     });
 
+    $scope.paneToShow = 0;
+
+    $scope.onFindMatches = function(hike) {
+      var path = maprouteService.getEncodedPath([new google.maps.LatLng(hike.startPoint.lat, hike.startPoint.lng), new google.maps.LatLng(hike.endPoint.lat, hike.endPoint.lng)])
+      $scope.matches = maprouteService.getMatches(path).then(function(data) {
+        $scope.matches = data.data;
+        $scope.paneToShow = 1;
+      });
+    };
+
+    $scope.onViewRequests = function(hike) {
+      $scope.paneToShow = 2;
+    };
   });
