@@ -62,7 +62,12 @@ angular.module('routeFinderApp')
       },
 
       addMatch : function(hike, match) {
-         var promise = $http.put('/api/hikes/' + hike._id + '/matches', match);
+        var promise = $http.put('/api/hikes/' + hike._id + '/matches', match);
+        return promise;
+      },
+
+      removeHikeFromCollection: function(hike, collectionType, id) {
+        var promise = $http.delete('/api/hikes/' + hike._id + '/' + collectionType + '/' + id);
         return promise;
       }
     };

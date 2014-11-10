@@ -27,4 +27,16 @@ angular.module('routeFinderApp')
     $scope.handleSendRequest = function(hike, match) {
       maprouteService.addMatch(hike, match);
     };
+
+    $scope.removeFrom = function(hike, collectionType, id) {
+      maprouteService.removeHikeFromCollection(hike, collectionType, id).then(function(data) {
+        // replace the hike with the one returned
+        $scope.hikes = _.map($scope.hikes, function(item) {
+          if (item._id.toString() === data.data._id.toString())
+            return data.data;
+          else
+            return item;
+        });
+      });
+    };
   });

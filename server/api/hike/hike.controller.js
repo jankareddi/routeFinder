@@ -72,25 +72,53 @@ exports.addMatch = function(req, res) {
   });
 };
 
-function containsObjectId(hike, id) {
-  var retValue = false;
-  var mr = _.map(hike.maprouteRequests, function(item) {
-    return item.toString();
-  });
+exports.removeRouteFromHike = function(req, res) {
+  Hike.findById(req.params.id, function (err, hike) {
+    if (err) { return handleError(res, err); }
+    if(!hike) { return res.send(404); }
 
-  var ma = _.map(hike.maprouteAccepts, function(item) {
-    return item.toString();
-  });
+    // find if the route exists in the collection specified
+    // delete it and return the object - hence returning http 200 instead of 204
+    if (req.params.collectionType === 'requests') {
+      hike._doc.maprouteRequests = _.filter(hike._doc.maprouteRequests, function(item) {
+        return (item.id.toString() === req.params.routeId);
+      });
 
-  var mrj = _.map(hike.maprouteRejects, function(item) {
-    return item.toString();
-  });
+      // make sure object is marked modified so mongoose can save the object to DB
+      hike.markModified('maprouteRequests');
+    } else if (req.params.collectionType === 'accepts') {
+      hike._doc.maprouteAccepts = _.filter(hike._doc.maprouteAccepts, function(item) {
+        return (item.id.toString() === req.params.routeId);
+      });
 
-  if (_.contains(mr, id) || _.contains(ma, id) || _.contains(mrj, id)) {
-      return true;
+      // make sure object is marked modified so mongoose can save the object to DB
+      hike.markModified('maprouteAccepts');
+    } else if (req.params.collectionType === 'accepts') {
+      hike._doc.maprouteRejects = _.filter(hike._doc.maprouteRejects, function(item) {
+        return (item.id.toString() === req.params.routeId);
+      });
+
+      // make sure object is marked modified so mongoose can save the object to DB
+      hike.markModified('maprouteRejects');
     }
 
-  return retValue;
+    hike.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, hike);
+    });
+  });
+};
+
+function containsObjectId(hike, id) {
+  return (containsObjectIdInList(hike._doc.maprouteRequests, id) || containsObjectIdInList(hike._doc.maprouteAccepts, id) || containsObjectIdInList(hike._doc.maprouteRejects, id));
+}
+
+function containsObjectIdInList(list, id) {
+  var stringifiedObjectIds = _.map(list, function(item) {
+    return item.toString();
+  });
+
+  return _.contains(stringifiedObjectIds, id);
 }
 
 function handleError(res, err) {
