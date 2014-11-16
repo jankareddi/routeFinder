@@ -13,5 +13,6 @@ router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 router.put('/:id/matches', controller.addMatch);
 router.delete('/:id/:collectionType/:routeId', controller.removeRouteFromHike);
+router.put('/:id/:collectionType', controller.setRouteOnHike);
 
 module.exports = router;

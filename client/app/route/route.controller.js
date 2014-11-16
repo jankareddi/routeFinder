@@ -1,4 +1,5 @@
 'use strict';
+/* global google*/
 
 angular.module('routeFinderApp')
   .controller('RouteCtrl', function ($scope, $window, maprouteService) {
@@ -18,13 +19,13 @@ angular.module('routeFinderApp')
 
       }, function handleError(err) {
 
-        alert('Unable to get current location');
+        $window.alert('Unable to get current location' + err);
 
       }, {timeout : 5000, enableHighAccuracy : true});
     } else {
 
-      alert("geolocation is null");
-    };
+      $window.alert('geolocation is null');
+    }
 
     $scope.mapOptions = {
       center: new google.maps.LatLng($scope.currentLocation.lat, $scope.currentLocation.lng), //(18.460913, 73.900740),
@@ -40,7 +41,7 @@ angular.module('routeFinderApp')
  
     $scope.setZoomMessage = function(zoom) {
       $scope.zoomMessage = 'You just zoomed to '+zoom+'!';
-      console.log(zoom,'zoomed')
+      console.log(zoom,'zoomed');
     };
 
     $scope.offerRideClicked = function() {
@@ -53,7 +54,7 @@ angular.module('routeFinderApp')
       };
 
       directionsService.route(request, function(result, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
+        if (status === google.maps.DirectionsStatus.OK) {
           directionsDisplay.setDirections(result);
 
           // add the route to the store
@@ -81,18 +82,18 @@ angular.module('routeFinderApp')
 
           // store the ride request
           maprouteService.addHike(startPt, endPt).catch(function(err) {
-            alert(err);
+            $window.alert(err);
           });
 
-          var encodedPath = maprouteService.getEncodedPath([startPt.loc,endPt.loc]);
-          // find out if there is a matching route here
-          maprouteService.getMatches(encodedPath).then(function(data) {
-            // if sucessful, a list of matching routes will be returned
-            var i = data;
-          });
+          // var encodedPath = maprouteService.getEncodedPath([startPt.loc,endPt.loc]);
+          // // find out if there is a matching route here
+          // maprouteService.getMatches(encodedPath).then(function(data) {
+          //   // if sucessful, a list of matching routes will be returned
+          //   var i = data;
+          // });
         });
       }, function(err) {
-        alert(err);
+        $window.alert(err);
       });
     };
 

@@ -7,7 +7,39 @@
             <br/>(<i>List all offers made by you</i>)
         </accordion-heading>
         <ol>
-            <li ng-repeat="route in routes">From {{route.startPoint.address}} <b>to</b> {{route.endPoint.address}}</li>
+            <div ng-repeat="route in routes">
+                <li>From {{route.startPoint.address}} <b>to</b> {{route.endPoint.address}}</li>
+                <button type="button" class="btn btn-primary btn-xs" ng-click="getHikesForRoute(route)">Show</button>
+               <tabset>
+                    <tab heading="Requests">
+                        <div class="row" ng-repeat="request in route.requests">
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="addRouteToHike(route, 'accepts', request)">
+                                Accept
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="addRouteToHike(route, 'rejects', request)">
+                                Reject
+                            </button>
+                        </div>
+                    </tab>
+                    <tab heading="Accepts">
+                        <div class="row" ng-repeat="accept in route.accepts">
+                            {{accept.startPoint.address}} <b>to</b> {{accept.endPoint.address}}
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="addRouteToHike(route, 'rejects', accept)">
+                                Reject
+                            </button>
+                        </div>
+                    </tab>
+                    <tab heading="Rejected">
+                        <div class="row" ng-repeat="reject in route.rejects">
+                            {{reject.startPoint.address}} <b>to</b> {{reject.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="addRouteToHike(route, 'accepts', reject)">
+                                Accept
+                            </button>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
         </ol>
     </accordion-group>
     <accordion-group>
@@ -37,21 +69,21 @@
                     </ul>
                 </div>
 
-                <div id="requestList" class="well col-md-5" ng-show="hike.maprouteRequests.length > 0 && paneToShow === 2">
+                <div id="requestList" class="well col-md-5" ng-show="paneToShow === 2">
                     <ul>
                         <li ng-repeat="request in hike.maprouteRequests">
-                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}} -- Status : Requested
                             <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'requests', request._id)">Cancel</button>
                         </li>
 
-                        <li ng-repeat="request in hike.maprouteAccepts">
-                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
-                            <button type="button" class="btn btn-primary btn-xs">Cancel</button>
+                        <li ng-repeat="accept in hike.maprouteAccepts">
+                            {{accept.startPoint.address}} <b>to</b> {{accept.endPoint.address}} -- Status : Accepted
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'accepts', accept._id)">Cancel</button>
                         </li>
 
-                        <li ng-repeat="request in hike.maprouteRejects">
-                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
-                            <button type="button" class="btn btn-primary btn-xs">Cancel</button>
+                        <li ng-repeat="reject in hike.maprouteRejects">
+                            {{reject.startPoint.address}} <b>to</b> {{reject.endPoint.address}} -- Status : Rejected
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'rejects', reject._id)">Cancel</button>
                         </li>
                     </ul>
                 </div>

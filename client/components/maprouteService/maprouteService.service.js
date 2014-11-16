@@ -1,4 +1,5 @@
 'use strict';
+/* global google*/
 
 angular.module('routeFinderApp')
   .factory('maprouteService', function ($http, $q) {
@@ -27,11 +28,11 @@ angular.module('routeFinderApp')
         var deferred = $q.defer();
 
         geoCoder.geocode({'address' : location}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
+          if (status === google.maps.GeocoderStatus.OK) {
             var returnValue = {loc : results[0].geometry.location, address : results[0].formatted_address};
             deferred.resolve(returnValue);
           } else {
-            deferred.reject("Geocode was not successful for the following reason: " + status);
+            deferred.reject('Geocode was not successful for the following reason: ' + status);
           }
         });
 
@@ -68,6 +69,16 @@ angular.module('routeFinderApp')
 
       removeHikeFromCollection: function(hike, collectionType, id) {
         var promise = $http.delete('/api/hikes/' + hike._id + '/' + collectionType + '/' + id);
+        return promise;
+      },
+
+      getHikesForRoute : function(route) {
+        var promise = $http.get('/api/maproutes/' + route._id + '/hikes');
+        return promise;
+      },
+
+      setRouteOnHike : function(route, collectionType, hike) {
+        var promise = $http.put('/api/hikes/' + hike._id + '/' + collectionType, route);
         return promise;
       }
     };
