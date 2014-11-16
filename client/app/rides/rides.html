@@ -1,0 +1,102 @@
+<div class="container col-md-12">
+  <div ng-include="'components/navbar/navbar.html'"></div>
+  <accordion close-others="true">
+    <accordion-group>
+        <accordion-heading>
+            <b>Offers  </b><span class="badge">{{routes.length}}</span><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <br/>(<i>List all offers made by you</i>)
+        </accordion-heading>
+        <ol>
+            <div ng-repeat="route in routes">
+                <li>From {{route.startPoint.address}} <b>to</b> {{route.endPoint.address}}</li>
+                <button type="button" class="btn btn-primary btn-xs" ng-click="getHikesForRoute(route)">Show</button>
+               <tabset>
+                    <tab heading="Requests">
+                        <div class="row" ng-repeat="request in route.requests">
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="addRouteToHike(route, 'accepts', request)">
+                                Accept
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="addRouteToHike(route, 'rejects', request)">
+                                Reject
+                            </button>
+                        </div>
+                    </tab>
+                    <tab heading="Accepts">
+                        <div class="row" ng-repeat="accept in route.accepts">
+                            {{accept.startPoint.address}} <b>to</b> {{accept.endPoint.address}}
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="addRouteToHike(route, 'rejects', accept)">
+                                Reject
+                            </button>
+                        </div>
+                    </tab>
+                    <tab heading="Rejected">
+                        <div class="row" ng-repeat="reject in route.rejects">
+                            {{reject.startPoint.address}} <b>to</b> {{reject.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="addRouteToHike(route, 'accepts', reject)">
+                                Accept
+                            </button>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </ol>
+    </accordion-group>
+    <accordion-group>
+        <accordion-heading>
+            <b>Requests  </b><span class="badge">{{hikes.length}}</span><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <br/>(<i>List all requests made by you</i>)
+        </accordion-heading>
+        <ol>
+            <div ng-repeat="hike in hikes">
+                <li>From {{hike.startPoint.address}} <b>to</b> {{hike.endPoint.address}}</li>
+                <br/>
+                <button type="button" class="btn btn-primary btn-xs" ng-click="onFindMatches(hike)">
+                    Find Matches
+                </button>
+
+                <button type="button" class="btn btn-primary btn-xs" ng-click="onViewRequests(hike)">
+                    View Request Status
+                </button>
+                
+                <br/>
+                <div id="matchList" class="well col-md-5" ng-show="matches.length > 0 && paneToShow === 1">
+                    <ul>
+                        <li ng-repeat="match in matches">
+                            {{match.obj.startPoint.address}} <b>to</b> {{match.obj.endPoint.address}}
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="handleSendRequest(hike, match)">Send Request</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="requestList" class="well col-md-5" ng-show="paneToShow === 2">
+                    <ul>
+                        <li ng-repeat="request in hike.maprouteRequests">
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}} -- Status : Requested
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'requests', request._id)">Cancel</button>
+                        </li>
+
+                        <li ng-repeat="accept in hike.maprouteAccepts">
+                            {{accept.startPoint.address}} <b>to</b> {{accept.endPoint.address}} -- Status : Accepted
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'accepts', accept._id)">Cancel</button>
+                        </li>
+
+                        <li ng-repeat="reject in hike.maprouteRejects">
+                            {{reject.startPoint.address}} <b>to</b> {{reject.endPoint.address}} -- Status : Rejected
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'rejects', reject._id)">Cancel</button>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </ol>
+    </accordion-group>
+    <accordion-group>
+        <accordion-heading>
+            <b>Shared</b><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <br/>(<i>List all rides you share</i>)
+        </accordion-heading>
+        This is just some content to illustrate fancy headings.
+    </accordion-group>
+  </accordion>
+</div>
