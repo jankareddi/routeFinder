@@ -83,21 +83,21 @@ exports.removeRouteFromHike = function(req, res) {
     // delete it and return the object - hence returning http 200 instead of 204
     if (req.params.collectionType === 'requests') {
       hike._doc.maprouteRequests = _.filter(hike._doc.maprouteRequests, function(item) {
-        return (item.id.toString() === req.params.routeId);
+        return (item.toString() !== req.params.routeId);
       });
 
       // make sure object is marked modified so mongoose can save the object to DB
       hike.markModified('maprouteRequests');
     } else if (req.params.collectionType === 'accepts') {
       hike._doc.maprouteAccepts = _.filter(hike._doc.maprouteAccepts, function(item) {
-        return (item.id.toString() === req.params.routeId);
+        return (item.toString() !== req.params.routeId);
       });
 
       // make sure object is marked modified so mongoose can save the object to DB
       hike.markModified('maprouteAccepts');
-    } else if (req.params.collectionType === 'accepts') {
+    } else if (req.params.collectionType === 'rejects') {
       hike._doc.maprouteRejects = _.filter(hike._doc.maprouteRejects, function(item) {
-        return (item.id.toString() === req.params.routeId);
+        return (item.toString() !== req.params.routeId);
       });
 
       // make sure object is marked modified so mongoose can save the object to DB
