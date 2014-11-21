@@ -67,7 +67,8 @@ exports.matchRoutes = function(req, res) {
   var pointPath = polyline.decode(req.query.path);
 
   // use the factor due to a bug in mongoose. likely to addressed in mongoose 3.8.18+
-  var maxDist = tolerance; ///6378137;
+  // divide by 6378137 was necessary when using geoNear. Since the code uses aggregates now, this no longer seems necessary
+  var maxDist = tolerance;
   var distField = "";
   startpoint.coordinates = [pointPath[0][1], pointPath[0][0]];
   endpoint.coordinates = [pointPath[1][1], pointPath[1][0]];
