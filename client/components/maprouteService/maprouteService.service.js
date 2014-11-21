@@ -43,11 +43,7 @@ angular.module('routeFinderApp')
         return google.maps.geometry.encoding.encodePath(points);
       },
 
-      addHike : function(startPt, endPt) {
-        var hikePoints = {};
-        hikePoints.startPoint = makeHikeNode(startPt);
-        hikePoints.endPoint = makeHikeNode(endPt);
-
+      addHike : function(hikePoints) {
         var promise = $http.post('/api/hikes', hikePoints);
         return promise;
       },

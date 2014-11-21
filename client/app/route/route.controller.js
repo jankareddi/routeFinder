@@ -2,7 +2,7 @@
 /* global google*/
 
 angular.module('routeFinderApp')
-  .controller('RouteCtrl', function ($scope, $window, maprouteService) {
+  .controller('RouteCtrl', function ($scope, $window, maprouteService, Auth) {
     $scope.message = 'Hello';
     $scope.myMarkers = [];
     $scope.currentLocation = {lat : 78.460913, lng : 73.900740};
@@ -81,7 +81,10 @@ angular.module('routeFinderApp')
           var endPt = data;
 
           // store the ride request
-          maprouteService.addHike(startPt, endPt).catch(function(err) {
+          var hikePoints = {};
+          hikePoints.startPoint = makeHikeNode(startPt);
+          hikePoints.endPoint = makeHikeNode(endPt);
+          maprouteService.addHike(hikePoints).catch(function(err) {
             $window.alert(err);
           });
 
@@ -102,5 +105,10 @@ angular.module('routeFinderApp')
         map: $scope.myMap,
         position: pushPosition
       }));
+    };
+
+    var makeHikeNode = function(hikePt) {
+      var hikeNode = {lng : hikePt.loc.lng(), lat : hikePt.loc.lat(), address : hikePt.address};      
+      return hikeNode;
     };
   });

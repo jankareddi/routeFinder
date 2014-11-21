@@ -8,7 +8,7 @@ var polyline = require('polyline');
 
 // Get list of maproutes
 exports.index = function(req, res) {
-  Maproute.find(function (err, maproutes) {
+  Maproute.find({'user' : req.user._id}, function (err, maproutes) {
     if(err) { return handleError(res, err); }
     return res.json(200, maproutes);
   });
@@ -16,7 +16,7 @@ exports.index = function(req, res) {
 
 // Get a single maproute
 exports.show = function(req, res) {
-  Maproute.findById(req.params.id, function (err, maproute) {
+  Maproute.findById({'_id': req.params.id, 'user': req.user._id}, function (err, maproute) {
     if(err) { return handleError(res, err); }
     if(!maproute) { return res.send(404); }
     return res.json(maproute);
@@ -25,6 +25,7 @@ exports.show = function(req, res) {
 
 // Creates a new maproute in the DB.
 exports.create = function(req, res) {
+  req.body.user = req.user._id;
   Maproute.create(req.body, function(err, maproute) {
     if(err) { return handleError(res, err); }
     return res.json(201, maproute);
@@ -37,6 +38,7 @@ exports.update = function(req, res) {
   Maproute.findById(req.params.id, function (err, maproute) {
     if (err) { return handleError(res, err); }
     if(!maproute) { return res.send(404); }
+    if (maproute.user !== req.user._id) { return res.send(401); }
     var updated = _.merge(maproute, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
@@ -50,6 +52,7 @@ exports.destroy = function(req, res) {
   Maproute.findById(req.params.id, function (err, maproute) {
     if(err) { return handleError(res, err); }
     if(!maproute) { return res.send(404); }
+    if (maproute.user !== req.user._id) { return res.send(401); }
     maproute.remove(function(err) {
       if(err) { return handleError(res, err); }
       return res.send(204);
@@ -64,20 +67,25 @@ exports.matchRoutes = function(req, res) {
   var pointPath = polyline.decode(req.query.path);
 
   // use the factor due to a bug in mongoose. likely to addressed in mongoose 3.8.18+
-  var maxDist = tolerance/6378137;
+  // divide by 6378137 was necessary when using geoNear. Since the code uses aggregates now, this no longer seems necessary
+  var maxDist = tolerance;
+  var distField = "";
   startpoint.coordinates = [pointPath[0][1], pointPath[0][0]];
   endpoint.coordinates = [pointPath[1][1], pointPath[1][0]];
 
   var consolidatedRoutes = {},
       routeSet1, routeSet2;
 
-  Maproute.geoNear(startpoint, {maxDistance : maxDist, spherical : true}, function(err, routes) {
+  Maproute.aggregate([{"$geoNear": {"near": startpoint, "distanceField": "distField", "maxDistance" : maxDist, "spherical" : true}},
+                      {"$match" : {user: {$ne : req.user._id}}}], function(err, routes) {
+    if(err) { return handleError(res, err); }
     if (_.isUndefined(routes) || _.isEmpty(routes))
       return res.send(200, []);
 
     routeSet1 = routes;
 
-    Maproute.geoNear(endpoint, {maxDistance : maxDist, spherical : true}, function(err, routes) {
+    Maproute.aggregate([{"$geoNear": { "near": endpoint, "distanceField": "distField", "maxDistance" : maxDist, "spherical" : true}},
+                        {"$match" : {user: {$ne : req.user._id}}}], function(err, routes) {
       if (_.isUndefined(routes) || _.isEmpty(routes))
       return res.send(200, []);
 
@@ -87,7 +95,7 @@ exports.matchRoutes = function(req, res) {
 
       // run an aggregate on the consolidate list to find a route that appears in both route sets
       var countOfRoutes = _.pairs(_.countBy(consolidatedRoutes, function(item) {
-        return item.obj._id;
+        return item._id;
       }));
 
       // filter for routes that appear twice (meaning they are close to both points) and then get list of route IDs for those
@@ -97,7 +105,7 @@ exports.matchRoutes = function(req, res) {
 
       // list of routes filtered by route IDs obtained in previous step
       var filteredRoutes = _.filter(routeSet1, function(item) {
-        return _.contains(filteredRouteIds, item.obj._id.toString());
+        return _.contains(filteredRouteIds, item._id.toString());
       });
 
       return res.send(200, filteredRoutes);
@@ -113,6 +121,7 @@ exports.hikesforRoute = function(req, res) {
   var routeId = mongoose.Types.ObjectId(req.params.id);
 
   Hike.find({})
+  .where('user').ne(req.user._id)
   .where('maprouteRequests').in([routeId])
   .exec(function(err, hikes) {
     if(err) { return handleError(res, err); }
@@ -121,6 +130,7 @@ exports.hikesforRoute = function(req, res) {
   });
 
   Hike.find({})
+  .where('user').ne(req.user._id)
   .where('maprouteAccepts').in([routeId])
   .exec(function(err, hikes) {
     if(err) { return handleError(res, err); }
@@ -129,6 +139,7 @@ exports.hikesforRoute = function(req, res) {
   });
 
   Hike.find({})
+  .where('user').ne(req.user._id)
   .where('maprouteRejects').in([routeId])
   .exec(function(err, hikes) {
     if(err) { return handleError(res, err); }
