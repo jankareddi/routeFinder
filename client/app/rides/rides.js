@@ -6,6 +6,7 @@ angular.module('routeFinderApp')
       .state('rides', {
         url: '/rides',
         templateUrl: 'app/rides/rides.html',
-        controller: 'RidesCtrl'
+        controller: 'RidesCtrl',
+        authenticate: true
       });
   });

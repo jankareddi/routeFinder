@@ -5,14 +5,6 @@ angular.module('routeFinderApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    },
-    {
-      'title' : 'Routes',
-      'link' : '/route'
-    },
-    {
-      'title' : 'Rides',
-      'link' : '/rides'
     }];
 
     $scope.isCollapsed = true;

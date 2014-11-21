@@ -6,6 +6,7 @@ angular.module('routeFinderApp')
       .state('route', {
         url: '/route',
         templateUrl: 'app/route/route.html',
-        controller: 'RouteCtrl'
+        controller: 'RouteCtrl',
+        authenticate: true
       });
   });
