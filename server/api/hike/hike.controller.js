@@ -5,7 +5,7 @@ var Hike = require('./hike.model');
 
 // Get list of hikes
 exports.index = function(req, res) {
-  Hike.find()
+  Hike.find({'user' : req.user._id})
   .populate('maprouteRequests maprouteAccepts maprouteRejects')
   .exec(function(err, hikes) {
     if(err) { return handleError(res, err); }
@@ -15,7 +15,7 @@ exports.index = function(req, res) {
 
 // Get a single hike
 exports.show = function(req, res) {
-  Hike.findById(req.params.id, function (err, hike) {
+  Hike.findById({'_id': req.params.id, 'user': req.user._id}, function (err, hike) {
     if(err) { return handleError(res, err); }
     if(!hike) { return res.send(404); }
     return res.json(hike);
@@ -24,6 +24,7 @@ exports.show = function(req, res) {
 
 // Creates a new hike in the DB.
 exports.create = function(req, res) {
+  req.body.user = req.user._id;
   Hike.create(req.body, function(err, hike) {
     if(err) { return handleError(res, err); }
     return res.json(201, hike);
@@ -36,6 +37,7 @@ exports.update = function(req, res) {
   Hike.findById(req.params.id, function (err, hike) {
     if (err) { return handleError(res, err); }
     if(!hike) { return res.send(404); }
+    if (hike.user !== req.user._id) { return res.send(401); }
     var updated = _.merge(hike, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
@@ -49,6 +51,7 @@ exports.destroy = function(req, res) {
   Hike.findById(req.params.id, function (err, hike) {
     if(err) { return handleError(res, err); }
     if(!hike) { return res.send(404); }
+    if (hike.user !== req.user._id) { return res.send(401); }
     hike.remove(function(err) {
       if(err) { return handleError(res, err); }
       return res.send(204);
@@ -63,10 +66,11 @@ exports.addMatch = function(req, res) {
   .exec(function (err, hike) {
     if (err) { return handleError(res, err); }
     if(!hike) { return res.send(404); }
-    if (containsObjectId(hike._doc, req.body.obj._id.toString())) {
+    if (hike.userId === req.body.user) { return res.send(404); }
+    if (containsObjectId(hike._doc, req.body._id.toString())) {
       return res.json(409);
     }
-    hike._doc.maprouteRequests.push(req.body.obj);
+    hike._doc.maprouteRequests.push(req.body);
     hike.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, hike);

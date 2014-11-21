@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var MaprouteSchema = new Schema({
+  user : { type: Schema.Types.ObjectId, ref: 'User' },
   startPoint : {
     lng : Number,
     lat : Number,
@@ -20,6 +21,13 @@ var MaprouteSchema = new Schema({
     coordinates : []
   }
 });
+
+/* Virtuals */
+MaprouteSchema
+  .virtual('userId')
+  .get(function() {
+    return this.user.toString();
+  });
 
 MaprouteSchema.index({loc : '2dsphere'});
 module.exports = mongoose.model('Maproute', MaprouteSchema);

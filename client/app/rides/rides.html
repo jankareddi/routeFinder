@@ -63,7 +63,7 @@
                 <div id="matchList" class="well col-md-5" ng-show="matches.length > 0 && paneToShow === 1">
                     <ul>
                         <li class="row" ng-repeat="match in matches">
-                            {{match.obj.startPoint.address}} <b>to</b> {{match.obj.endPoint.address}}
+                            {{match.startPoint.address}} <b>to</b> {{match.endPoint.address}}
                             <button type="button" class="btn btn-primary btn-xs" ng-click="handleSendRequest(hike, match)">Send Request</button>
                         </li>
                     </ul>

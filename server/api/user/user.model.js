@@ -53,6 +53,12 @@ UserSchema
     };
   });
 
+UserSchema
+  .virtual('idString')
+  .get(function() {
+    return this._id.toString();
+  });
+
 /**
  * Validations
  */
