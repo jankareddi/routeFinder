@@ -12,6 +12,12 @@ angular.module('routeFinderApp')
           controller:'password'
         }
       },
+      changeSettings : {
+        method: 'PUT',
+        params: {
+          controller: 'settings'
+        }
+      },
       get: {
         method: 'GET',
         params: {

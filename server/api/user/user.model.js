@@ -15,6 +15,10 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+  tolerance: {
+    distance: Number, 
+    time: Number
+  },
   facebook: {},
   github: {}
 });
