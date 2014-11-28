@@ -4,9 +4,24 @@
   <div class="col-md-offset-1">
     <input id="startPt" class="col-md-3" type="text" placeholder="Start location" ng-model="startLoc">
     <input id="endPt" class="col-md-3 col-md-offset-1" type="text" placeholder="End location" ng-model="endLoc">
-    <input id="offerRide" class="col-md-1 col-md-offset-1" type="button" value="Offer ride" ng-click="offerRideClicked()">
-    <input id="requestRide" class="col-md-1 col-md-offset-1" type="button" value="Request ride" ng-click="requestRideClicked()">
   </div>
+</div>
+<br/>
+<div class="row">
+  <div class="input-group col-md-2 col-md-offset-1">
+    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="startDate" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+    <span class="input-group-btn">
+      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+  </div>
+</div>
+<div class="row">
+  <timepicker class="col-md-2 col-md-offset-1" ng-model="startTime" hour-step="1" minute-step="15" show-meridian="true"></timepicker>
+  </div>
+<br/>
+<div class="row">
+  <input id="offerRide" class="col-md-1 col-md-offset-1" type="button" value="Offer ride" ng-click="offerRideClicked()">
+  <input id="requestRide" class="col-md-1 col-md-offset-1" type="button" value="Request ride" ng-click="requestRideClicked()">
 </div>
 <p></p>
 <div class="row">

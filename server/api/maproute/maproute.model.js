@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 
 var MaprouteSchema = new Schema({
   user : { type: Schema.Types.ObjectId, ref: 'User' },
+  startTime : Date,
   startPoint : {
     lng : Number,
     lat : Number,
