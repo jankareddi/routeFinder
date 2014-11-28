@@ -6,6 +6,24 @@ angular.module('routeFinderApp')
     $scope.message = 'Hello';
     $scope.myMarkers = [];
     $scope.currentLocation = {lat : 78.460913, lng : 73.900740};
+    $scope.minDate = new Date();
+    $scope.startDate = new Date();
+    $scope.startTime = new Date();
+    $scope.format = 'dd-MMMM-yyyy';
+
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1
+    };
+
+  $scope.open = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.opened = true;
+  };
+
+
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var directionsService = new google.maps.DirectionsService();
 
@@ -67,6 +85,7 @@ angular.module('routeFinderApp')
           maprouteData.loc.coordinates = _.map(result.routes[0].overview_path, function(item) {
             return [item.lng(), item.lat()];
           });
+          maprouteData.startTime = getStartDate();
 
           maprouteService.addMaproute(maprouteData);
         }
@@ -84,6 +103,7 @@ angular.module('routeFinderApp')
           var hikePoints = {};
           hikePoints.startPoint = makeHikeNode(startPt);
           hikePoints.endPoint = makeHikeNode(endPt);
+          hikePoints.startTime = getStartDate();
           maprouteService.addHike(hikePoints).catch(function(err) {
             $window.alert(err);
           });
@@ -110,5 +130,10 @@ angular.module('routeFinderApp')
     var makeHikeNode = function(hikePt) {
       var hikeNode = {lng : hikePt.loc.lng(), lat : hikePt.loc.lat(), address : hikePt.address};      
       return hikeNode;
+    };
+
+    var getStartDate = function() {
+      var dt = new Date($scope.startDate.getFullYear(), $scope.startDate.getMonth(), $scope.startDate.getDate(), $scope.startTime.getHours(), $scope.startTime.getMinutes(), 0);
+      return dt;
     };
   });

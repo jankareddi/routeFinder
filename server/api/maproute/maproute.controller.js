@@ -63,7 +63,7 @@ exports.destroy = function(req, res) {
 exports.matchRoutes = function(req, res) {
   var startpoint = { type : "Point", coordinates : [  73.9092, 18.4581] };
   var endpoint = { type : "Point", coordinates : [73.9143, 18.5679] };
-  var tolerance = parseInt(req.query.tolerance);
+  var tolerance = req.user.tolerance.distance;
   var pointPath = polyline.decode(req.query.path);
 
   // use the factor due to a bug in mongoose. likely to addressed in mongoose 3.8.18+

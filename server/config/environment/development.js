@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/routefinder-dev'
   },
 
-  seedDB: true
+  seedDB: false
 };

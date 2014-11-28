@@ -12,13 +12,14 @@ A simple WIP application that identifies routes that can be shared between users
     * accept/ reject an incoming request
     * view status of requests sent
     * turned on facebook authentication and all queries are now in the context of the current user
+    * allow time to specify for both routes and hikes
+    * handle user specific distance tolerance while matching ride shares
 
 ## What is next (prioritized more or less as sequenced)
 Now that the the POC is complete, the intent is to develop the following:
 
 1. Code clean up and add unit tests
-2. Allow time to specify for both routes and hikes
-3. Add user specific distance and time tolerances while matching ride shares and use those while picking routes
-4. Host on heroku
-5. UI cleanup - all though bootstrap is being used, the UI is barely passable at the moment
-6. Look for people in network to offer/ ask ride share (facebook friends to start with, maybe specific facebook groups the current user belongs to?)
+2. Add user specific time tolerances while matching ride shares and use those while picking routes
+3. Host on heroku
+4. UI cleanup - all though bootstrap is being used, the UI is barely passable at the moment
+5. Look for people in network to offer/ ask ride share (facebook friends to start with, maybe specific facebook groups the current user belongs to?)
