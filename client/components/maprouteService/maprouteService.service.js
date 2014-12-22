@@ -13,8 +13,8 @@ angular.module('routeFinderApp')
 
     // Public API here
     return {
-      getMatches: function (encodedPath) {
-        var promise = $http.get('/api/maproutes/matches?tolerance=2000&path=' + encodedPath);
+      getMatches: function (encodedPath, requestTime) {
+        var promise = $http.get('/api/maproutes/matches?time=' + requestTime + '&path=' + encodedPath);
         return promise;
       },
 
