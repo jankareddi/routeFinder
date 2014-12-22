@@ -65,6 +65,8 @@ exports.matchRoutes = function(req, res) {
   var endpoint = { type : "Point", coordinates : [73.9143, 18.5679] };
   var tolerance = req.user.tolerance.distance;
   var pointPath = polyline.decode(req.query.path);
+  var requestTime = Date.parse(req.query.time);
+  var timeToleranceInMs = req.user.tolerance.time * 60 * 1000;
 
   // use the factor due to a bug in mongoose. likely to addressed in mongoose 3.8.18+
   // divide by 6378137 was necessary when using geoNear. Since the code uses aggregates now, this no longer seems necessary
@@ -76,8 +78,23 @@ exports.matchRoutes = function(req, res) {
   var consolidatedRoutes = {},
       routeSet1, routeSet2;
 
+// filter first by geo distance, then go thro the hoops to ensure you get the absolute delta time from ride start and that it is within tolerance
   Maproute.aggregate([{"$geoNear": {"near": startpoint, "distanceField": "distField", "maxDistance" : maxDist, "spherical" : true}},
-                      {"$match" : {user: {$ne : req.user._id}}}], function(err, routes) {
+                      {"$match" : {user: {$ne : req.user._id}}},
+                      {"$project": {user : 1, startTime: 1, startPoint: 1, endPoint: 1, overview_polyline: 1, loc: 1,
+                        'timeDelta': { 
+                          '$subtract': ['$startTime', requestTime]
+                      }}},
+                      {"$project": {user : 1, startTime: 1, startPoint: 1, endPoint: 1, overview_polyline: 1, loc: 1,
+                        'absTimeDelta' : { 
+                          '$cond' : [
+                              { '$lte': ['$timeDelta', 0] },
+                              { '$multiply' : ['$timeDelta', -1 ] },
+                              '$timeDelta'
+                          ]
+                      }}},
+                      { '$match': {absTimeDelta : {$lte : new Date(timeToleranceInMs)}}}
+                     ], function(err, routes) {
     if(err) { return handleError(res, err); }
     if (_.isUndefined(routes) || _.isEmpty(routes))
       return res.send(200, []);

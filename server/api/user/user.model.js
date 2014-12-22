@@ -16,8 +16,8 @@ var UserSchema = new Schema({
   provider: String,
   salt: String,
   tolerance: {
-    distance: Number, 
-    time: Number
+    distance: { type: Number, default: 2000},
+    time: {type: Number, default: 30}
   },
   facebook: {},
   github: {}
