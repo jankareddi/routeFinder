@@ -8,7 +8,7 @@
         </accordion-heading>
         <ol>
             <div ng-repeat="route in routes">
-                <li class="row">From {{route.startPoint.address}} <b>to</b> {{route.endPoint.address}}</li>
+                <li class="row">From {{route.startPoint.address}} <b>to</b> {{route.endPoint.address}} via {{route.waypoints}}</li>
                 <button type="button" class="btn btn-primary btn-xs" ng-click="getHikesForRoute(route)">Show</button>
                <tabset>
                     <tab heading="Requests">
@@ -63,7 +63,7 @@
                 <div id="matchList" class="well col-md-5" ng-show="matches.length > 0 && paneToShow === 1">
                     <ul>
                         <li class="row" ng-repeat="match in matches">
-                            {{match.startPoint.address}} <b>to</b> {{match.endPoint.address}}
+                            {{match.startPoint.address}} <b>to</b> {{match.endPoint.address}} via {{match.waypoints}}
                             <button type="button" class="btn btn-primary btn-xs" ng-click="handleSendRequest(hike, match)">Send Request</button>
                         </li>
                     </ul>
@@ -72,17 +72,17 @@
                 <div id="requestList" class="well col-md-5" ng-show="paneToShow === 2">
                     <ul>
                         <li class="row" ng-repeat="request in hike.maprouteRequests">
-                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}} -- Status : Requested
+                            {{request.startPoint.address}} <b>to</b> {{request.endPoint.address}} via {{request.waypoints}} -- Status : Requested
                             <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'requests', request._id)">Cancel</button>
                         </li>
 
                         <li class="row" ng-repeat="accept in hike.maprouteAccepts">
-                            {{accept.startPoint.address}} <b>to</b> {{accept.endPoint.address}} -- Status : Accepted
+                            {{accept.startPoint.address}} <b>to</b> {{accept.endPoint.address}} via {{accept.waypoints}} -- Status : Accepted
                             <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'accepts', accept._id)">Cancel</button>
                         </li>
 
                         <li class="row" ng-repeat="reject in hike.maprouteRejects">
-                            {{reject.startPoint.address}} <b>to</b> {{reject.endPoint.address}} -- Status : Rejected
+                            {{reject.startPoint.address}} <b>to</b> {{reject.endPoint.address}} via {{reject.waypoints}} -- Status : Rejected
                             <button type="button" class="btn btn-primary btn-xs" ng-click="removeFrom(hike, 'rejects', reject._id)">Cancel</button>
                         </li>
                     </ul>

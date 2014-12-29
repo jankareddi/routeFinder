@@ -81,11 +81,11 @@ exports.matchRoutes = function(req, res) {
 // filter first by geo distance, then go thro the hoops to ensure you get the absolute delta time from ride start and that it is within tolerance
   Maproute.aggregate([{"$geoNear": {"near": startpoint, "distanceField": "distField", "maxDistance" : maxDist, "spherical" : true}},
                       {"$match" : {user: {$ne : req.user._id}}},
-                      {"$project": {user : 1, startTime: 1, startPoint: 1, endPoint: 1, overview_polyline: 1, loc: 1,
+                      {"$project": {user : 1, startTime: 1, startPoint: 1, endPoint: 1, waypoints: 1, overview_polyline: 1, loc: 1,
                         'timeDelta': { 
                           '$subtract': ['$startTime', requestTime]
                       }}},
-                      {"$project": {user : 1, startTime: 1, startPoint: 1, endPoint: 1, overview_polyline: 1, loc: 1,
+                      {"$project": {user : 1, startTime: 1, startPoint: 1, endPoint: 1, waypoints: 1, overview_polyline: 1, loc: 1,
                         'absTimeDelta' : { 
                           '$cond' : [
                               { '$lte': ['$timeDelta', 0] },
