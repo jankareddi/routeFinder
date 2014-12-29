@@ -19,6 +19,7 @@ A simple WIP application that identifies routes that can be shared between users
 Now that the the POC is complete, the intent is to develop the following:
 
 1. Code clean up and add unit tests
-2. Host on heroku
-3. UI cleanup - all though bootstrap is being used, the UI is barely passable at the moment
-4. Look for people in network to offer/ ask ride share (facebook friends to start with, maybe specific facebook groups the current user belongs to?)
+2. Add  way point support (so users can specify "via" a certain location)
+3. Host on heroku
+4. UI cleanup - all though bootstrap is being used, the UI is barely passable at the moment
+5. Look for people in network to offer/ ask ride share (facebook friends to start with, maybe specific facebook groups the current user belongs to?)
