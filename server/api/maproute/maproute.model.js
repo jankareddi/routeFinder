@@ -16,6 +16,7 @@ var MaprouteSchema = new Schema({
     lat : Number,
     address : String
   },
+  waypoints: {type: String, default: ''},
   overview_polyline: String,
   loc : {
     type : {type : String},

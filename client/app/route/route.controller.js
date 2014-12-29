@@ -2,7 +2,7 @@
 /* global google*/
 
 angular.module('routeFinderApp')
-  .controller('RouteCtrl', function ($scope, $window, maprouteService, Auth) {
+  .controller('RouteCtrl', function ($scope, $window, maprouteService, Auth, _) {
     $scope.message = 'Hello';
     $scope.myMarkers = [];
     $scope.currentLocation = {lat : 78.460913, lng : 73.900740};
@@ -71,6 +71,16 @@ angular.module('routeFinderApp')
         travelMode: google.maps.TravelMode.DRIVING
       };
 
+      // get the way points if the user has provided them (limit to a max of 3, ignore the rest)
+      if (!(_.isUndefined($scope.waypoints) || _.isEmpty($scope.waypoints) || $scope.waypoints.length === 0)) {
+        var viaSplits = $scope.waypoints.split(';', 3);
+        if (viaSplits.length > 0) {
+          request.waypoints = _.map(viaSplits, function(item) {
+            return {'location': item, 'stopover': false};
+          });
+        }
+      }
+
       directionsService.route(request, function(result, status) {
         if (status === google.maps.DirectionsStatus.OK) {
           directionsDisplay.setDirections(result);
@@ -79,6 +89,7 @@ angular.module('routeFinderApp')
           var maprouteData = {};
           maprouteData.startPoint = {lng : result.routes[0].legs[0].start_location.lng(), lat : result.routes[0].legs[0].start_location.lat(), address : result.routes[0].legs[0].start_address};
           maprouteData.endPoint = {lng : result.routes[0].legs[0].end_location.lng(), lat : result.routes[0].legs[0].end_location.lat(), address : result.routes[0].legs[0].end_address};
+          maprouteData.waypoints = $scope.waypoints;
           maprouteData.overview_polyline = result.routes[0].overview_polyline;
           maprouteData.loc = {};
           maprouteData.loc.type = 'MultiPoint';
