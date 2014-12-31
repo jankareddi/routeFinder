@@ -23,3 +23,14 @@ Now that the the POC is complete, the intent is to develop the following:
 2. Host on heroku
 3. UI cleanup - all though bootstrap is being used, the UI is barely passable at the moment
 4. Look for people in network to offer/ ask ride share (facebook friends to start with, maybe specific facebook groups the current user belongs to?)
+
+## Setting up the development environment
+Follow these steps:
+
+1. git clone https://github.com/jankareddi/routeFinder
+2. cd routeFinder
+3. create a copy of the file local.env.sample.js, rename it local.env.js and set values for FACEBOOK_ID  and FACEBOOK_SECRET
+4. run 'npm install' from the cmd prompt
+5. run 'bower install' from the cmd prompt
+6. run 'grunt serve' and browse to http://localhost:9000
+
