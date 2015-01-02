@@ -2,7 +2,7 @@
 FROM dockerfile/nodejs-bower-grunt
 
 # Set instructions.
-apt-get install ruby-compass
+RUN apt-get install ruby-compass
 ADD package.json /app/
 ADD bower.json /app/
 ADD . /app
