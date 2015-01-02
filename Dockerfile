@@ -2,9 +2,15 @@
 FROM dockerfile/nodejs-bower-grunt
 
 # Set instructions.
-RUN apt-get install ruby-full
-RUN gem install sass
-RUN gem install compass
+# Ruby install
+RUN \
+  curl --progress http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.gz | tar xz && \
+  cd ruby-2.1.2 && \
+  ./configure --disable-install-doc && \
+  make && make install && \
+  cd .. && rm -rf ruby-2.1.2* && \
+  echo 'gem: --no-document' > /usr/local/etc/gemrc && \
+  gem install bundler sass compass
 
 ADD package.json /app/
 ADD bower.json /app/
