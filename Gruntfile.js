@@ -582,7 +582,6 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'clean:server',
         'env:all',
-        'env:prod',
         'injector:sass', 
         'concurrent:server',
         'injector',
