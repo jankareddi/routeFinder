@@ -44,7 +44,7 @@ Run all the commands below from the Docker shell
 4. docker build -t jankareddi/routefinder
 5. docker pull mongo (This will pull the mongo image)
 6. docker run --name mongodev -d mongo (run mongo)
-7. docker run -d -P --name rfweb --link mongodev:rfdb - FACEBOOK_ID=<id> -e FACEBOOK_SECRET=<secret> jankareddi/routefinder
+7. docker run -d -P --name rfweb --link mongodev:rfdb - FACEBOOK_ID='id' -e FACEBOOK_SECRET='secret' jankareddi/routefinder
 
 The last step will link the web app container with the mongo container.
 
