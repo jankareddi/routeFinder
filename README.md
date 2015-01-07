@@ -38,7 +38,7 @@ Follow these steps:
 ## Docker setup
 Run all the commands below from the Docker shell
 
-1. create a folder <app>, cd <app>
+1. create a folder "app", cd "app"
 2. git clone https://github.com/jankareddi/routeFinder
 3. cd routeFinder
 4. docker build -t jankareddi/routefinder
