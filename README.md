@@ -48,4 +48,4 @@ Run all the commands below from the Docker shell
 
 The last step will link the web app container with the mongo container.
 
-Note: If you are running this from Windows, then you will need to get the IP of the docker VM first. Run the following command: boot2docker ip. Get the port by running the command docker ps. You can then navigate to the web application by browsing to http://<ip>:<port> where ip and port values are what you got from the previous 2 steps.
+Note: If you are running this from Windows, then you will need to get the IP of the docker VM first. Run the following command: boot2docker ip. Get the port by running the command docker ps. You can then navigate to the web application by browsing to http://ip:port where ip and port values are what you got from the previous 2 steps.
