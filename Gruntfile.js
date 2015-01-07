@@ -578,6 +578,21 @@ module.exports = function (grunt) {
       ]);
     }
 
+    if (target === 'docker') {
+      return grunt.task.run([
+        'clean:server',
+        'env:all',
+        'injector:sass', 
+        'concurrent:server',
+        'injector',
+        'wiredep',
+        'autoprefixer',
+        'express:dev',
+        'wait',
+        'watch'
+      ]);
+    }
+
     grunt.task.run([
       'clean:server',
       'env:all',

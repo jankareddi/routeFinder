@@ -15,6 +15,7 @@ A simple WIP application that identifies routes that can be shared between users
     * allow time to specify for both routes and hikes
     * handle user specific distance and time tolerance while matching ride shares
     * add way point support (so users can specify "via" a certain location)
+    * add Docker configuration
 
 ## What is next (prioritized more or less as sequenced)
 Now that the the POC is complete, the intent is to develop the following:
@@ -34,3 +35,17 @@ Follow these steps:
 5. run 'bower install' from the cmd prompt
 6. run 'grunt serve' and browse to http://localhost:9000
 
+## Docker setup
+Run all the commands below from the Docker shell
+
+1. create a folder "app", cd "app"
+2. git clone https://github.com/jankareddi/routeFinder
+3. cd routeFinder
+4. docker build -t jankareddi/routefinder
+5. docker pull mongo (This will pull the mongo image)
+6. docker run --name mongodev -d mongo (run mongo)
+7. docker run -d -P --name rfweb --link mongodev:rfdb -e FACEBOOK_ID='id' -e FACEBOOK_SECRET='secret' jankareddi/routefinder
+
+The last step will link the web app container with the mongo container.
+
+Note: If you are running this from Windows, then you will need to get the IP of the docker VM first. Run the following command: boot2docker ip. Get the port by running the command docker ps. You can then navigate to the web application by browsing to http://ip:port where ip and port values are what you got from the previous 2 steps.
